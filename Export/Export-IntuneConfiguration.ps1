@@ -193,6 +193,7 @@ $objects = @('Get-IntuneDeviceConfigurationPolicy', `
         'Get-IntuneDeviceEnrollmentConfiguration', `
         'Get-IntuneDeviceCategory', `
         'Get-IntuneWindowsInformationProtectionPolicy', `
+        'Get-IntuneMobileAppConfigurationPolicy', `
         'Get-IntuneAppProtectionPolicy', `
         'Get-IntuneMobileApp', `
         'Get-IntuneRoleDefinition', `
