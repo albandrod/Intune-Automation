@@ -15,7 +15,6 @@ Param (
 # Make Invoke-WebRequest faster
 $ProgressPreference = "SilentlyContinue"
 
-# Enforce settings with GPO: https://www.adobe.com/devnet-docs/acrobatetk/tools/AdminGuide/gpo.html
 # Download Reader installer and update
 Write-Host "Downloading Reader"
 $Reader = Get-AdobeAcrobatReaderDC | Where-Object { $_.Platform -eq "Windows" -and ($_.Language -eq "English" -or $_.Language -eq "Neutral") }
@@ -64,13 +63,14 @@ If ($Reader) {
         Invoke-WebRequest -Uri $wrapperUrl -OutFile $wrapperBin -UseBasicParsing
     }
     catch {
-        Throw "Failed to Microsoft Win32 Content Prep Tool."
+        Throw "Failed to download Microsoft Win32 Content Prep Tool."
         Break
     }
 
     # Create the package
     try {
         $PackageOutput = Join-Path -Path $Path -ChildPath "Output"
+        If (!(Test-Path $PackageOutput)) { New-Item -Path $PackageOutput -ItemType "Directory" -Force -ErrorAction "SilentlyContinue" > $Null }
         Start-Process -FilePath $wrapperBin -ArgumentList "-c $PackagePath -s $ScriptName -o $PackageOutput -q" -Wait -NoNewWindow
     }
     catch {
